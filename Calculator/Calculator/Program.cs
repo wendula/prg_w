@@ -39,6 +39,48 @@ namespace Calculator
 
             //Tento komentar smaz a misto nej zacni psat svuj prdacky kod.
 
+            Console.WriteLine("Zadej první číslo výpočtu.");
+            int cislo1 = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Zadej druhé číslo výpočtu.");
+            int cislo2 = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Zadej číselnou operaci, kterou chceš provést.");
+            string operace = Console.ReadLine();
+
+            int result = 0;
+            switch (operace)
+            {
+                case "součet":
+                case "+":
+                    result = cislo1 + cislo2;
+                    break;
+                case "rozdíl":
+                case "-":
+                    result = cislo1 - cislo2;
+                    break;
+                case "násobek":
+                case "*":
+                    result = cislo1 * cislo2;
+                    break;
+                case "podíl":
+                case "/":
+                    if (cislo2 != 0)
+                    {   
+                        result = cislo1 / cislo2; 
+                    }
+                    else
+                    {   
+                        Console.WriteLine("Nelzde dělit nulou.");
+                        return;
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Neplatná operace.");
+                    return;
+            }
+            Console.WriteLine("Výsledek je " + result);
+
             Console.ReadKey(); //Toto nech jako posledni radek, aby se program neukoncil ihned, ale cekal na stisk klavesy od uzivatele.
         }
     }
