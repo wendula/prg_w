@@ -40,15 +40,15 @@ namespace Calculator
             //Tento komentar smaz a misto nej zacni psat svuj prdacky kod.
 
             Console.WriteLine("Zadej první číslo výpočtu.");
-            int cislo1 = Convert.ToInt32(Console.ReadLine());
+            double cislo1 = Convert.ToDouble(Console.ReadLine());
 
             Console.WriteLine("Zadej druhé číslo výpočtu.");
-            int cislo2 = Convert.ToInt32(Console.ReadLine());
+            double cislo2 = Convert.ToDouble(Console.ReadLine());
 
             Console.WriteLine("Zadej číselnou operaci, kterou chceš provést.");
             string operace = Console.ReadLine();
 
-            int result = 0;
+            double result = 0;
             switch (operace)
             {
                 case "součet":
@@ -65,19 +65,21 @@ namespace Calculator
                     break;
                 case "podíl":
                 case "/":
-                    if (cislo2 != 0)
-                    {   
-                        result = cislo1 / cislo2; 
+                    while (cislo2 == 0)
+                    {
+                        Console.WriteLine("Nelze dělit nulou. Zadej jiné číslo.");
+                        cislo2 = Convert.ToInt32(Console.ReadLine());
+                        if (cislo2!=0)
+                        {
+                            break;
+                        }
                     }
-                    else
-                    {   
-                        Console.WriteLine("Nelzde dělit nulou.");
-                        return;
-                    }
+                    result = cislo1 / cislo2;
                     break;
                 default:
-                    Console.WriteLine("Neplatná operace.");
-                    return;
+                    Console.WriteLine("Neplatná operace. Zadej novou.");
+                    operace = Console.ReadLine();
+                    break;
             }
             Console.WriteLine("Výsledek je " + result);
 
