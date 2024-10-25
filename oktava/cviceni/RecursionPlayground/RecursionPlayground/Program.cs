@@ -25,11 +25,11 @@ namespace RecursionPlayground
         static int Factorial(int n)
         {
             // TODO: Urci ukoncovaci podminku pro faktorial a zavolej Factorial zevnitr se spravnym parametrem / vypoctem.
-            int result = n * (n - 1);
-            if (n!=0)
+            int result;
+            if (n == 1) return 1;
+            else
             {
-                n = n - 1;
-                result = Factorial(n);
+                return n * Factorial(n - 1);
             }
             return result;
             // TODO: Uprav, aby Factorial vracel spravnou hodnotu.
@@ -38,6 +38,14 @@ namespace RecursionPlayground
         static int Fibonacci(int n)
         {
             // TODO: Urci ukoncovaci podminku pro Fibonacciho a zavolej Fibonacci zevnitr se spravnym parametrem / vypoctem.
+            if (n<1)
+            {
+                Console.WriteLine("Nelze.");
+                return -1;
+            }
+            if (n <= 2) return n;
+            return Fibonacci(n - 1) + Fibonacci(n - 2);
+
             return 0; // TODO: Uprav, aby Fibonacci vracel spravnou hodnotu.
         }
     }
