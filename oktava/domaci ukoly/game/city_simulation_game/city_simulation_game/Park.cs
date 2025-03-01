@@ -14,9 +14,9 @@ namespace city_simulation_game
         }
         public override void AffectCity(City city)
         {
-            city.budget -= 100;
-            city.satis += 1;
-            city.heal += 1;
+            city.budget -= 100;//cost of construction
+            city.satis += 2;//more fun for citizens
+            city.heal += 1;//greener city - healthier citizens
         }
     }
 }

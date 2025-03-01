@@ -10,32 +10,34 @@ namespace city_simulation_game
     {
         static void Main(string[] args)
         {
+            //opening information and basics
             Console.WriteLine("welcome mayor! your city awaits you. what are you going to name it?");
             string city_name = Console.ReadLine();
             Console.WriteLine("bold choice! and how big of a city do you think you can manage? we advice somewhere between 5-10 blocks for a start, but we are only the city council, so it is up to you.");
             int city_size = 0;
             bool check = false;
             while (!check) { check = int.TryParse(Console.ReadLine(), out city_size); }
-            City city = new City(city_size,city_name);
-            Console.WriteLine("now for your turns. you can construct buildings, as many as you want to, if you have the money for it");
+            City city = new City(city_size,city_name);//creation of the city
+            Console.WriteLine("now for your turns. you can construct buildings, as many as you want to, if you have the money for it. each turn, the building will affect your city based on their characteristics. try to fill your city and end up with content and healthy citizens to win.");
+            Console.ReadKey();
 
-            while (true)
+            while (true)//game loop
             {
                 city.DisplayCity();
-                if(city.satisfaction<1 || city.health<1)
+                if((city.buildings == city_size * city_size && (city.satisfaction<1 || city.health<1)) || city.satisfaction < 1 || city.health < 1)//ending - fail
                 {
                     Console.WriteLine("your management absolutely failed. your citizens cannot live in a place like this. you have much to learn, byee");
                     break;
                 }
-                else if (city.buildings == city_size * city_size && city.satisfaction > 50 && city.health > 50 && city.education > 30 && city.budget > 0)
+                else if (city.buildings == city_size * city_size && city.satisfaction > 50 && city.health > 50 && city.education > 30 && city.budget > 0)//ending - win
                 {
                     Console.WriteLine("your skills are very appretiated, your citizens are content and can live live a happy live in the city you have build. you've won!");
                     break;
                 }
-                Console.WriteLine("what is your next action? \ntype 'exit' to end this turn\nbuild a house = 'O' (cost=100, adds population)\nbuild a factory = 'F' (cost=300, adds income, lowers health)\nbuild a hospital = 'H' (cost = 350, adds health)\nbuild a school = 'S' (cost = 350, adds education which adds to income)\nbuild a shopping centre = 'C' (cost=250, adds income and satisfaction)\nbuild a park = 'P' (cost=100, adds satisfaction and health)\nrepair a building = 'R' (cost=50)");
+                Console.WriteLine("what is your next action? \ntype 'exit' to end this turn\nbuild a house = 'O' (cost=100, adds population)\nbuild a factory = 'F' (cost=300, adds income, lowers health)\nbuild a hospital = 'H' (cost=350, adds health)\nbuild a school = 'S' (cost=350, adds education which adds to income)\nbuild a shopping centre = 'C' (cost=250, adds income and satisfaction)\nbuild a park = 'P' (cost=100, adds satisfaction and health)\nrepair a building = 'R' (cost=50)");
                 string choice = Console.ReadLine().ToUpper();
                 Building building = null;
-                switch (choice)
+                switch (choice)//game actions - play
                 {
                     case "EXIT":
                         city.EndTurn();
@@ -77,7 +79,7 @@ namespace city_simulation_game
                         city.RepairBuilding(x, y);
                         break;
                     default:
-                        Console.WriteLine("that was something completely else than what we wanted");
+                        Console.WriteLine("that was something completely else than what we wanted (enter)");
                         break;
                 }
             }

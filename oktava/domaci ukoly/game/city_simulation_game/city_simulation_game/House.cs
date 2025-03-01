@@ -14,8 +14,8 @@ namespace city_simulation_game
         }
         public override void AffectCity(City city)
         {
-            city.population += 5;
-            city.budget -= 100;
+            city.population += 5;//effect
+            city.budget -= 100;//cost of construction
         }
     }
 }

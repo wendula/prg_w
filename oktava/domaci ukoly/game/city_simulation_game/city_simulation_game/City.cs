@@ -21,7 +21,7 @@ namespace city_simulation_game
         public int heal;
         public int turn = 1;
         public int buildings = 0;
-        public Building[,] Grid { get; set; }
+        public Building[,] Grid { get; set; }//city visual
         private int size;
 
         public City(int size, string name)
@@ -31,7 +31,7 @@ namespace city_simulation_game
             this.name = name;
         }
 
-        public void AddBuilding(Building building)
+        public void AddBuilding(Building building)//build
         {
             Console.WriteLine("where do we place the building? give me a X coordinate (counting from 0)");
             int x = 0;
@@ -40,7 +40,7 @@ namespace city_simulation_game
             while (!check) { check = int.TryParse(Console.ReadLine(), out x); }
             Console.WriteLine("and an Y coordinate, please");
             check = false;
-            while (!check) { check = int.TryParse(Console.ReadLine(), out y); }
+            while (!check) { check = int.TryParse(Console.ReadLine(), out y); }//coordinates check
             if (x >= 0 && x < size && y >= 0 && y < size && Grid[y, x] == null)
             {
                 Grid[y,x] = building;
@@ -49,15 +49,17 @@ namespace city_simulation_game
             }
             else
             {
-                Console.WriteLine("uhm, nope, definitely not there. you already have a building there, or you're trying to build on a nonexistent street");
+                Console.WriteLine("uhm, nope, definitely not there. you already have a building there, or you're trying to build on a nonexistent street (enter)");
+                Console.ReadKey();
             }
         }
-        public void EndTurn()
+        public void EndTurn()//affects city each turn
         {
-            budget += income;
-            health += heal;
-            satisfaction += satis;
-            education += educate;
+            budget += income;//adds money from factories and shopping centres
+            health += heal;//adds health from hospitals
+            satisfaction += satis;//adds satisfaction based on several factors (lower)
+            education += educate;//adds education based on schools and population
+            //satisfaction
             if (population > income / 10)
             {
                 satisfaction -= 5;
@@ -65,7 +67,7 @@ namespace city_simulation_game
             else satisfaction += 2;
             turn++;
 
-            // Age buildings and check repairs
+            // age buildings and check repairs
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
@@ -77,22 +79,24 @@ namespace city_simulation_game
                 }
             }
         }
-        public void RepairBuilding(int x, int y)
+        public void RepairBuilding(int x, int y)//repairing older factories and hospitals
         {
             if (x >= 0 && x < size && y >= 0 && y < size && Grid[y, x] != null)
             {
                 Grid[y, x].age = 0;
-                Console.WriteLine("well done, building repaired");
+                Console.WriteLine("well done, building repaired (enter)");
                 Console.ReadKey();
                 budget -= 50;
+                income += 50;
+                heal += 2;
             }
             else
             {
-                Console.WriteLine("there's definitely no building here!");
+                Console.WriteLine("there's definitely no building here! (enter)");
                 Console.ReadKey();
             }
         }
-        public void DisplayCity()
+        public void DisplayCity()//displays city visually
         {
             Console.Clear();
             Console.WriteLine($"city: {name}, turn: {turn}");
