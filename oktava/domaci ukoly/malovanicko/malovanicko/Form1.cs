@@ -22,6 +22,8 @@ namespace malovanicko
         Brush brush_eraser = new SolidBrush(Color.White);
         Bitmap bitmap;
         int startX, startY, endX, endY, sizeX, sizeY;//souřadnice
+        Random rnd = new Random();
+        bool rainbow_bool;
 
         private void picture_MouseDown(object sender, MouseEventArgs e)
         {
@@ -35,19 +37,40 @@ namespace malovanicko
         {
             if (paint == true)
             {
-                if (what == 1)//tužka
+                if (rainbow_bool == true)//barevná tužka pokradená od filipa (s dovolením)
                 {
-                    current_location = e.Location;
-                    g.DrawLine(pen, current_location, last_location);
-                    g.FillEllipse(brush, current_location.X - (pen.Width / 2), current_location.Y - (pen.Width / 2), pen.Width, pen.Width);
-                    last_location = current_location;
+                    Color rainbow_color = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));//náhodné barvy
+                    pen.Color = rainbow_color;
+                    brush = new SolidBrush(rainbow_color);
+                    button_currcolor.BackColor = rainbow_color;
                 }
-                if (what == 2)//guma
+                switch (what)
                 {
-                    current_location = e.Location;
-                    g.DrawLine(eraser, current_location, last_location);
-                    g.FillEllipse(brush_eraser, current_location.X - (pen.Width / 2), current_location.Y - (pen.Width / 2), pen.Width, pen.Width);
-                    last_location = current_location;
+                    case 1://tužka
+                        current_location = e.Location;
+                        g.DrawLine(pen, current_location, last_location);
+                        g.FillEllipse(brush, current_location.X - (pen.Width / 2), current_location.Y - (pen.Width / 2), pen.Width, pen.Width);
+                        last_location = current_location;
+                        break;
+                    case 2://guma
+                        current_location = e.Location;
+                        g.DrawLine(eraser, current_location, last_location);
+                        g.FillEllipse(brush_eraser, current_location.X - (pen.Width / 2), current_location.Y - (pen.Width / 2), pen.Width, pen.Width);
+                        last_location = current_location;
+                        break;
+                    case 7:
+                        current_location = e.Location;
+                        int pf = Convert.ToInt32(pen.Width);
+
+                        for (int i = 0; i < 5; i++)//víc teček pro jedno místo
+                        {
+                            int offX = rnd.Next(-pf, pf);//rozptyl teček
+                            int offY = rnd.Next(-pf, pf);
+                            int dot_size = rnd.Next(1, (pf / 2) + 1); //náhodné velikosti
+                            g.FillEllipse(brush, current_location.X + offX, current_location.Y + offY, dot_size, dot_size);
+                        }
+                        last_location = current_location;
+                        break;
                 }
             }
             sizeX = e.X - startX;
@@ -79,30 +102,32 @@ namespace malovanicko
         private void picture_MouseUp(object sender, MouseEventArgs e)
         {
             paint = false;
-      
-            if (what==3)
+            
+            switch(what)
             {
-                g.DrawEllipse(pen, startX, startY, sizeX, sizeY);
-            }
-            if (what == 4)
-            {
-                g.DrawRectangle(pen, startX, startY, sizeX, sizeY);
-            }
-            if (what == 6)
-            {
-                g.DrawLine(pen, startX, startY, endX, endY);
-            }
-            if (what==5 && A!=Point.Empty && B!=Point.Empty)
-            {
-                g.DrawLine(pen, A, B);
-            }
-            if (what==5 && A!=Point.Empty && B!=Point.Empty && C!=Point.Empty)
-            {
-                Point[] points = {A,B,C};
-                g.DrawPolygon(pen, points);
-                A = Point.Empty;
-                B = Point.Empty;
-                C = Point.Empty;
+                case 3:
+                    g.DrawEllipse(pen, startX, startY, sizeX, sizeY);
+                    break;
+                case 4:
+                    g.DrawRectangle(pen, startX, startY, sizeX, sizeY);
+                    break;
+                case 6:
+                    g.DrawLine(pen, startX, startY, endX, endY);
+                    break;
+                case 5:
+                    if (A != Point.Empty && B != Point.Empty)
+                    {
+                        g.DrawLine(pen, A, B);
+                    }
+                    if (what == 5 && A != Point.Empty && B != Point.Empty && C != Point.Empty)
+                    {
+                        Point[] points = { A, B, C };
+                        g.DrawPolygon(pen, points);
+                        A = Point.Empty;
+                        B = Point.Empty;
+                        C = Point.Empty;
+                    }
+                    break;
             }
         }
 
@@ -116,42 +141,42 @@ namespace malovanicko
         {
             ColorDialog rainbow = new ColorDialog();
             rainbow.ShowDialog();
+            rainbow_bool = false;
             button_currcolor.BackColor = rainbow.Color;
             pen.Color = rainbow.Color;
-            Brush new_brush = new SolidBrush(rainbow.Color);
-            brush = new_brush;
+            brush = new SolidBrush(rainbow.Color);
         }
         //tlačítka pro čtyři základní barvy
         private void button_color1_Click(object sender, EventArgs e)
         {
+            rainbow_bool = false;
             button_currcolor.BackColor = Color.Red;
             pen.Color = Color.Red;
-            Brush new_brush = new SolidBrush(Color.Red);
-            brush = new_brush;
+            brush = new SolidBrush(Color.Red);
         }
 
         private void button_color2_Click(object sender, EventArgs e)
         {
+            rainbow_bool = false;
             button_currcolor.BackColor = Color.Yellow;
             pen.Color = Color.Yellow;
-            Brush new_brush = new SolidBrush(Color.Yellow);
-            brush = new_brush;
+            brush = new SolidBrush(Color.Yellow);
         }
 
         private void button_color3_Click(object sender, EventArgs e)
         {
+            rainbow_bool = false;
             button_currcolor.BackColor = Color.Blue;
             pen.Color = Color.Blue;
-            Brush new_brush = new SolidBrush(Color.Blue);
-            brush = new_brush;
+            brush = new SolidBrush(Color.Blue);
         }
 
         private void button_color4_Click(object sender, EventArgs e)
         {
+            rainbow_bool = false;
             button_currcolor.BackColor = Color.Green;
             pen.Color = Color.Green;
-            Brush new_brush = new SolidBrush(Color.Green);
-            brush = new_brush;
+            brush = new SolidBrush(Color.Green);
         }
 
         private void button_save_Click(object sender, EventArgs e)//ukládání
@@ -168,6 +193,10 @@ namespace malovanicko
         {
             MessageBox.Show("To draw a triangle, click on three points. After clicking on two, a line will show up. With the third point it will connect into a triangle.");//vysvětlivka pro kreslení trojúhelníku
         }
+
+        
+
+
 
         //tlačítka s určením what proměnné
         private void button_pencil_Click(object sender, EventArgs e)
@@ -202,22 +231,30 @@ namespace malovanicko
         {
             what = 6;
         }
+        private void button_spray_Click(object sender, EventArgs e)
+        {
+            what = 7;
+        }
+        private void button_rainbow_Click(object sender, EventArgs e)
+        {
+            rainbow_bool = true;
+        }
         private void picture_Paint(object sender, PaintEventArgs e) //dohledáno na youtube - pro zobrazení kreslících se tvarů během jejich kreslení (natažení)
         {
             if (paint)
             {
                 Graphics g = e.Graphics;
-                if (what == 3)
+                switch(what)
                 {
-                    g.DrawEllipse(pen, startX, startY, sizeX, sizeY);
-                }
-                if (what == 4)
-                {
-                    g.DrawRectangle(pen, startX, startY, sizeX, sizeY);
-                }
-                if (what == 6)
-                {
-                    g.DrawLine(pen, startX, startY, endX, endY);
+                    case 3:
+                        g.DrawEllipse(pen, startX, startY, sizeX, sizeY);
+                        break;
+                    case 4:
+                        g.DrawRectangle(pen, startX, startY, sizeX, sizeY);
+                        break;
+                    case 6:
+                        g.DrawLine(pen, startX, startY, endX, endY);
+                        break;
                 }
             }
         }
